@@ -3,7 +3,7 @@ CC=g++
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
-INS_DIR := ~/bin
+AGIMUS_BIN_DIR := ../bin
 
 EXE := $(BIN_DIR)/autommpbsa
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
@@ -19,7 +19,7 @@ LDLIBS   := -lm -lstdc++fs
 all: $(EXE)
 
 $(EXE): $(OBJ) | $(BIN_DIR)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+	$(CC) -std=c++17 $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
@@ -31,6 +31,6 @@ clean:
 	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
 
 install: 
-	cp $(EXE) $(INS_DIR)
+	cp $(EXE) $(AGIMUS_BIN_DIR)
 
 -include $(OBJ:.o=.d)
