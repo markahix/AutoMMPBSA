@@ -38,7 +38,7 @@ std::string GetPostBuffer(std::string input_file)
   buffer.str("");
   while (getline(ifile,line))
   {
-    if (line.find("&general") != std::string::npos){break;}    
+  if (line.find("&general") != std::string::npos){break;}    
   }
   while (getline(ifile,line))
   {
@@ -48,7 +48,7 @@ std::string GetPostBuffer(std::string input_file)
   return buffer.str();
 }
 
-int get_traj_nframes(std::string trajfile,std::string prmtop)
+int get_traj_nframes(std::string trajfile, std::string prmtop)
 {
   std::string n_frames;
   std::stringstream buffer;
@@ -58,7 +58,6 @@ int get_traj_nframes(std::string trajfile,std::string prmtop)
   n_frames = utils::GetSysResponse(buffer.str().c_str());
   return stoi(n_frames.substr(n_frames.find(":")+1,n_frames.size()-n_frames.find(":")-1));
 }
-
 
 FileList::FileList(int argc, char** argv)
 {
@@ -130,7 +129,7 @@ FileList::FileList(int argc, char** argv)
     }
     if (! all_valid)
     {
-      std::cout << "Unable to validate all input files.  Exiting. " <<std::endl;
+      std::cout << "Unable to validate all input files.  Exiting. " << std::endl;
       exit(0);
     }
 }

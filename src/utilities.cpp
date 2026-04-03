@@ -1,9 +1,5 @@
 
 #include "utilities.h"
-#include "classes.h"
-#include "slurm.h"
-
-// namespace fs = std::experimental::filesystem;
 
 namespace utils
 {
@@ -12,15 +8,6 @@ namespace utils
         std::cout << "" << std::endl;
         std::cout << "Welcome to the AutoMMPBSA!" << std::endl;
         std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-        // std::cout << "" << std::endl;
-
     }
     void silent_shell(const char* cmd)
     {

@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    FileList my_files(argc,argv);
+    FileList my_files(argc, argv);
     std::string starting_directory_location = fs::current_path();
     
     // Get original MMPBSA input file and parse it into individual chunks.
