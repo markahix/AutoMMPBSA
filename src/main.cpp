@@ -3,12 +3,26 @@
 
 int main(int argc, char** argv)
 {
-    FileList my_files(argc, argv);
-    std::string starting_directory_location = fs::current_path();
+    // FileList my_files(argc, argv);
+    Settings settings(argc, argv);
+    // std::string starting_directory_location = fs::current_path();
     
+    // if prepare, run PREPARE function then exit
+    if (settings.PREPARE_JOB)
+    {
+      // prepare_mmpbsa_inputs
+    }
+    // if SUBMIT, run submit function then exit.
+
+    // if RUN, do the job.
+
+
+
+    /*  // THIS IS THE OLD FORM
+
     // Get original MMPBSA input file and parse it into individual chunks.
-    std::string prebuffer=GetPreBuffer(my_files.mmpbsa_input);
-    std::string postbuffer=GetPostBuffer(my_files.mmpbsa_input);
+    std::string prebuffer=GetPreBuffer(settings.mmpbsa_input);
+    std::string postbuffer=GetPostBuffer(settings.mmpbsa_input);
     
     // move necessary files into /tmp, then go there.
     my_files.copy_to_tmp();
@@ -101,5 +115,6 @@ int main(int argc, char** argv)
         ifile.close();
     }
     ofile.close();
+    */
     return 0;
 }
