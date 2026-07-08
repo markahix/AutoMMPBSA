@@ -22,6 +22,8 @@
 #include <unistd.h>
 #include <omp.h>
 
+#include "config.h"
+
 namespace fs = std::experimental::filesystem;
 
 class Settings
@@ -29,8 +31,8 @@ class Settings
     public:
         Settings(int argc, char** argv);
         ~Settings();
+        void Validate();
         bool PREPARE_JOB;
-        bool SUBMIT_JOB;
         bool RUN_JOB;
         std::string start_directory;
         std::string solvated_prmtop;
@@ -47,9 +49,9 @@ class Settings
 
 };
 void prepare_mmpbsa_job(Settings settings);
-void submit_mmpbsa_job(Settings settings);
 void run_mmpbsa_job(Settings settings);
 
+void RepeatCommandLineCall(int argc, char** argv);
 void silent_shell(const char* cmd);
 std::string GetSysResponse(const char* cmd);
 bool CheckProgAvailable(const char* program);

@@ -4,7 +4,6 @@
 Settings::Settings(int argc, char** argv)
 {
     PREPARE_JOB = false;
-    SUBMIT_JOB = false;
     RUN_JOB = false;
     start_directory = fs::current_path();
     solvated_prmtop="";
@@ -13,9 +12,9 @@ Settings::Settings(int argc, char** argv)
     ligand_prmtop="";
     mmpbsa_input="";
     trajectory="";
-    complex_mask=":1-100";
-    receptor_mask=":1-99";
-    ligand_mask=":100";
+    complex_mask="";
+    receptor_mask="";
+    ligand_mask="";
     salt_concentration="0.0";
 
     for (int i=0; i < argc; i++)
@@ -23,11 +22,6 @@ Settings::Settings(int argc, char** argv)
         if ((std::string)argv[i] == "--prepare")
         {
             PREPARE_JOB = true;
-            continue;
-        }
-        if ((std::string)argv[i] == "--submit")
-        {
-            SUBMIT_JOB = true;
             continue;
         }
         if ((std::string)argv[i] == "--run")
@@ -99,7 +93,103 @@ Settings::Settings(int argc, char** argv)
 }
 
 Settings::~Settings()
-{    
+{
+    
+}
+
+void Settings::Validate()
+{
+    bool EPICFAIL=false;
+
+    // make sure only one job type is declared on the command line.  if not, bail out.
+    if (PREPARE_JOB && RUN_JOB)
+    {
+        std::cerr << "Command line arguments indicate multiple job types requested.  Please resubmit with exactly one job type." << std::endl;
+        exit(0);
+    }
+
+    // if PREPARE_JOB, make sure we have all the masks necessary.
+    if (PREPARE_JOB)
+    {
+        if (complex_mask == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Complex mask is missing!" << std::endl;
+        }
+        if (receptor_mask == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Receptor mask is missing!" << std::endl;
+        }
+        if (ligand_mask == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Ligand mask is missing!" << std::endl;
+        }
+        if (solvated_prmtop == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Solvated prmtop is missing!" << std::endl;
+        }
+    }
+
+    // if RUN_JOB, make sure we have the necessary files.
+    if (RUN_JOB)
+    {
+        if (solvated_prmtop == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Solvated prmtop is missing!" << std::endl;
+        }
+        if (complex_prmtop == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Complex prmtop is missing!" << std::endl;
+        }
+        if (receptor_prmtop == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Receptor prmtop is missing!" << std::endl;
+        }
+        if (ligand_prmtop == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Ligand prmtop is missing!" << std::endl;
+        }
+        if (trajectory == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "Trajectory is missing!" << std::endl;
+        }
+        if (mmpbsa_input == "")
+        {
+            EPICFAIL=true;
+            std::cerr << "MMPBSA input is missing!" << std::endl;
+        }
+        if (std::getenv("HOSTNAME") == "warrior")
+        {
+            EPICFAIL=true;
+            std::cerr << "Attempted to run AutoMMPBSA on login node.  Resubmit as a SLURM job." << std::endl;
+
+        }
+    }
+
+    if (EPICFAIL)
+    {
+        std::cerr << "Errors encountered.  Terminating." << std::endl;
+        exit(0);
+    }
+}
+
+void RepeatCommandLineCall(int argc, char** argv)
+{
+    // Log command line argument that called this instance.
+    std::cout << "Command Line Call: "<< std::endl << "\t> ";
+    for (int i=0; i < argc; i++)
+    {
+      std::cout << argv[i] << " ";
+    }
+    std::cout << std::endl;
 }
 
 void silent_shell(const char* cmd)
